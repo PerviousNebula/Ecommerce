@@ -1,0 +1,14 @@
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.csprojAssemblyReference.cache
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/staticwebassets/Contracts.StaticWebAssets.Manifest.cache
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/staticwebassets/Contracts.StaticWebAssets.xml
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.AssemblyInfoInputs.cache
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.AssemblyInfo.cs
+/home/arturo/DBProject/Contracts/bin/Debug/netcoreapp3.1/Contracts.deps.json
+/home/arturo/DBProject/Contracts/bin/Debug/netcoreapp3.1/Contracts.dll
+/home/arturo/DBProject/Contracts/bin/Debug/netcoreapp3.1/Contracts.pdb
+/home/arturo/DBProject/Contracts/bin/Debug/netcoreapp3.1/Entities.dll
+/home/arturo/DBProject/Contracts/bin/Debug/netcoreapp3.1/Entities.pdb
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.RazorTargetAssemblyInfo.cache
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.csproj.CopyComplete
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.dll
+/home/arturo/DBProject/Contracts/obj/Debug/netcoreapp3.1/Contracts.pdb

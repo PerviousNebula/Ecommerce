@@ -1,0 +1,11 @@
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/Entities.csprojAssemblyReference.cache
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/staticwebassets/Entities.StaticWebAssets.Manifest.cache
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/staticwebassets/Entities.StaticWebAssets.xml
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/Entities.AssemblyInfoInputs.cache
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/Entities.AssemblyInfo.cs
+/home/arturo/DBProject/Entities/bin/Debug/netcoreapp3.1/Entities.deps.json
+/home/arturo/DBProject/Entities/bin/Debug/netcoreapp3.1/Entities.dll
+/home/arturo/DBProject/Entities/bin/Debug/netcoreapp3.1/Entities.pdb
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/Entities.RazorTargetAssemblyInfo.cache
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/Entities.dll
+/home/arturo/DBProject/Entities/obj/Debug/netcoreapp3.1/Entities.pdb
