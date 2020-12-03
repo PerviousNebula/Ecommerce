@@ -6,6 +6,12 @@ namespace Contracts
     {
         ICustomerRepository Customer { get; }
         IAddressRepository Address { get; }
+        ICategoryRepository Category { get; }
+        IProductRepository Product { get; }
+        IColorRepository Color { get; }
+        ISizeRepository Size { get; }
+        IUserRepository User { get; }
+        IRolRepository Rol{ get; }
         Task SaveAsync();
     }
 }

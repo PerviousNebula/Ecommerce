@@ -102,6 +102,11 @@ namespace DBProject.Controllers
                 customer.passwordHash = passwordHash;
                 customer.passwordSalt = passwordSalt;
             }
+            else
+            {
+                customer.passwordHash = customerEntity.passwordHash;
+                customer.passwordSalt = customerEntity.passwordSalt;
+            }
 
             _mapper.Map(customer, customerEntity);
 

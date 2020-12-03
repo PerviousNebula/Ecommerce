@@ -1,8 +1,3 @@
-/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.csprojAssemblyReference.cache
-/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/staticwebassets/Repository.StaticWebAssets.Manifest.cache
-/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/staticwebassets/Repository.StaticWebAssets.xml
-/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.AssemblyInfoInputs.cache
-/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.AssemblyInfo.cs
 /home/arturo/DBProject/Repository/bin/Debug/netcoreapp3.1/Repository.deps.json
 /home/arturo/DBProject/Repository/bin/Debug/netcoreapp3.1/Repository.dll
 /home/arturo/DBProject/Repository/bin/Debug/netcoreapp3.1/Repository.pdb
@@ -10,6 +5,11 @@
 /home/arturo/DBProject/Repository/bin/Debug/netcoreapp3.1/Entities.dll
 /home/arturo/DBProject/Repository/bin/Debug/netcoreapp3.1/Entities.pdb
 /home/arturo/DBProject/Repository/bin/Debug/netcoreapp3.1/Contracts.pdb
+/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.csprojAssemblyReference.cache
+/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/staticwebassets/Repository.StaticWebAssets.Manifest.cache
+/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/staticwebassets/Repository.StaticWebAssets.xml
+/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.AssemblyInfoInputs.cache
+/home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.AssemblyInfo.cs
 /home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.RazorTargetAssemblyInfo.cache
 /home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.csproj.CopyComplete
 /home/arturo/DBProject/Repository/obj/Debug/netcoreapp3.1/Repository.dll

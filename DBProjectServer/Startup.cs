@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using DBProject.ActionFilters;
 using DBProject.Extensions;
 using Entities.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DBProject
 {
@@ -38,6 +41,27 @@ namespace DBProject
             services.AddScoped<ValidationFilterAttribute>();
             services.AddScoped<ValidateEntityExistsAttribute<Customer>>();
             services.AddScoped<ValidateEntityExistsAttribute<Address>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Category>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Product>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Size>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Color>>();
+            services.AddScoped<ValidateEntityExistsAttribute<User>>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => 
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["JWT:Issuer"],
+                        ValidAudience = Configuration["JWT:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["JWT:ClaveSecreta"])
+                        )
+                    };
+                });
 
             services.AddControllers();
         }
@@ -61,6 +85,8 @@ namespace DBProject
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -37,6 +38,9 @@ namespace Entities.Models
 
         [Required(ErrorMessage = "Archive is required")]
         public bool archive { get; set; }
+
+        public ICollection<Size> Sizes { get; set; }
+        public ICollection<Color> Colors { get; set; }
 
         [Required(ErrorMessage = "CategoryId is required")]
         [ForeignKey(nameof(Category))]
