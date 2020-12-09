@@ -11,7 +11,8 @@ namespace Contracts
         IColorRepository Color { get; }
         ISizeRepository Size { get; }
         IUserRepository User { get; }
-        IRolRepository Rol{ get; }
+        IRolRepository Rol { get; }
+        IOrderRepository Order { get; }
         Task SaveAsync();
     }
 }

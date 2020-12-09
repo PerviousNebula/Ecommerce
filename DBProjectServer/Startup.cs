@@ -46,6 +46,7 @@ namespace DBProject
             services.AddScoped<ValidateEntityExistsAttribute<Size>>();
             services.AddScoped<ValidateEntityExistsAttribute<Color>>();
             services.AddScoped<ValidateEntityExistsAttribute<User>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Order>>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 
                 {

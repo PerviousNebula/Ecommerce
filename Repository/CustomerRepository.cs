@@ -102,5 +102,11 @@ namespace Repository
         {
             Update(customer);
         }
+
+        public async Task<Customer> GetCustomerByEmail(string email)
+        {
+            return await FindByCondition(c => c.email == email)
+                .FirstOrDefaultAsync();
+        }
     }
 }

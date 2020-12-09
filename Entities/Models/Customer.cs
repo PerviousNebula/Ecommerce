@@ -22,6 +22,7 @@ namespace Entities.Models
 
         [Required(ErrorMessage = "Email is required")]
         [StringLength(100, ErrorMessage = "Email can't be longer than 100 characters")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string email { get; set; }
 
         [Required(ErrorMessage = "PasswordHash is required")]
@@ -36,6 +37,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "Archive is required")]
         public bool archive { get; set; }
 
+        public ICollection<Order> Orders { get; set; }
         public ICollection<Address> Addresses { get; set; }
     }
 }

@@ -1,47 +1,57 @@
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("Address")]
-    public class Address : IEntity
+    [Table("Order")]
+    public class Order: IEntity
     {
         [Key]
-        [Column("addressId")]
+        [Column("orderId")]
         public int id { get; set; }
 
-        [Required(ErrorMessage = "Address1 is required")]
+        public string orderNumber { get; set; }
+
         [StringLength(200, ErrorMessage = "Address1 can't be longer than 200 characters")]
         public string address1 { get; set; }
 
         [StringLength(100, ErrorMessage = "Address2 can't be longer than 100 characters")]
         public string address2 { get; set; }
 
-        [Required(ErrorMessage = "City is required")]
         [StringLength(45, ErrorMessage = "City can't be longer than 45 characters")]
         public string city { get; set; }
 
-        [Required(ErrorMessage = "State is required")]
         [StringLength(45, ErrorMessage = "State can't be longer than 45 characters")]
         public string state { get; set; }
 
-        [Required(ErrorMessage = "Country is required")]
         [StringLength(45, ErrorMessage = "Country can't be longer than 45 characters")]
         public string country { get; set; }
 
-        [Required(ErrorMessage = "Zip is required")]
-        [StringLength(10, ErrorMessage = "Zip can't be longer than 10 characters")]
+        [StringLength(20, ErrorMessage = "Zip can't be longer than 20 characters")]
         public string zip { get; set; }
 
-        [Required(ErrorMessage = "Archive is required")]
-        public bool archive { get; set; }
+        [Required(ErrorMessage = "Shipping is required")]
+        public double shipping { get; set; }
 
-        [Required(ErrorMessage = "CustomerId is required")]
+        [Required(ErrorMessage = "Tax is required")]
+        public double tax { get; set; }
+
+        [Required(ErrorMessage = "Discount is required")]
+        public double discount { get; set; }
+
+        [Required(ErrorMessage = "Total is required")]
+        public double total { get; set; }
+
+        [Required(ErrorMessage = "Date is required")]
+        public DateTime date { get; set; }
+
         [ForeignKey(nameof(Customer))]
-        public int customerId { get; set; }
+        public int? customerId { get; set; }
         public Customer Customer { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        [ForeignKey(nameof(Address))]
+        public int? addressId { get; set; }
+        public Address Address { get; set; }
     }
 }

@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
+using DBProject.Extensions;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace DBProject.Controllers
@@ -15,11 +18,13 @@ namespace DBProject.Controllers
     {
         private IRepositoryWrapper _repository;
         private IMapper _mapper;
+        private IConfiguration _config;
 
-        public CustomerController(IRepositoryWrapper repository, IMapper mapper)
+        public CustomerController(IRepositoryWrapper repository, IMapper mapper, IConfiguration config)
         {
             _repository = repository;
             _mapper = mapper;
+            _config = config;
         }
 
         [HttpGet]
@@ -77,7 +82,7 @@ namespace DBProject.Controllers
         {
             var customerEntity = _mapper.Map<Customer>(customer);
 
-            CreatePasswordHash(customer.password, out byte[] passwordHash, out byte[] passwordSalt);
+            AuthExtensions.CreatePasswordHash(customer.password, out byte[] passwordHash, out byte[] passwordSalt);
             customer.passwordHash = passwordHash;
             customer.passwordSalt = passwordSalt;
 
@@ -98,7 +103,7 @@ namespace DBProject.Controllers
 
             if (!string.IsNullOrEmpty(customer.password))
             {
-                CreatePasswordHash(customer.password, out byte[] passwordHash, out byte[] passwordSalt);
+                AuthExtensions.CreatePasswordHash(customer.password, out byte[] passwordHash, out byte[] passwordSalt);
                 customer.passwordHash = passwordHash;
                 customer.passwordSalt = passwordSalt;
             }
@@ -128,13 +133,34 @@ namespace DBProject.Controllers
             return NoContent();
         }
     
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> Login([FromBody] LoginDto customer)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            var customerEntity = await _repository.Customer.GetCustomerByEmail(customer.email);
+            if (customerEntity == null)
             {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return NotFound();
             }
+
+            if (!AuthExtensions.VerifyPasswordHash(customer.password, customerEntity.passwordHash, customerEntity.passwordSalt))
+            {
+                return NotFound("Invalid email or password");
+            }
+
+            var claims  = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, customerEntity.id.ToString()),
+                new Claim(ClaimTypes.Email, customerEntity.email),
+                new Claim(ClaimTypes.Name, customerEntity.name)
+            };
+
+            var customerResult = _mapper.Map<CustomerDto>(customerEntity);
+
+            return Ok(new {
+                customer = customerResult,
+                token = AuthExtensions.TokenGeneration(claims, _config)
+            });
         }
     }
 }

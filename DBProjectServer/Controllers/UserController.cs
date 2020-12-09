@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
+using DBProject.Extensions;
 using Entities.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace DBProject.Controllers
 {
@@ -31,7 +27,6 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _repository.User.GetUsers();
@@ -43,7 +38,6 @@ namespace DBProject.Controllers
 
         [HttpGet("{id}", Name = "UserById")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<User>))]
-        [Authorize]
         public IActionResult GetUserById(int id)
         {
             var user = HttpContext.Items["entity"] as User;
@@ -55,12 +49,11 @@ namespace DBProject.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto user)
         {
             var userEntity = _mapper.Map<User>(user);
 
-            CreatePasswordHash(user.password, out byte[] passwordHash, out byte[] passwordSalt);
+            AuthExtensions.CreatePasswordHash(user.password, out byte[] passwordHash, out byte[] passwordSalt);
             userEntity.passwordHash = passwordHash;
             userEntity.passwordSalt = passwordSalt;
 
@@ -75,14 +68,13 @@ namespace DBProject.Controllers
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<User>))]
-        [Authorize]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserForUpdateDto user)
         {
             var userEntity = HttpContext.Items["entity"] as User;
 
             if (!string.IsNullOrEmpty(user.password) || user.password != null)
             {
-                CreatePasswordHash(user.password, out byte[] passwordHash, out byte[] passwordSalt);
+                AuthExtensions.CreatePasswordHash(user.password, out byte[] passwordHash, out byte[] passwordSalt);
                 user.passwordHash = passwordHash;
                 user.passwordSalt = passwordSalt;
             }
@@ -102,7 +94,6 @@ namespace DBProject.Controllers
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<User>))]
-        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var userEntity = HttpContext.Items["entity"] as User;
@@ -114,15 +105,16 @@ namespace DBProject.Controllers
         }
 
         [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Login([FromBody] LoginDto user)
         {
             var userEntity = await _repository.User.GetUserByEmail(user.email);
             if (userEntity == null)
             {
-                return NotFound("User not found");
+                return NotFound();
             }
 
-            if (!VerifyPasswordHash(user.password, userEntity.passwordHash, userEntity.passwordSalt))
+            if (!AuthExtensions.VerifyPasswordHash(user.password, userEntity.passwordHash, userEntity.passwordSalt))
             {
                 return NotFound("Invalid email or password");
             }
@@ -139,42 +131,8 @@ namespace DBProject.Controllers
 
             return Ok(new {
                 user = userResult,
-                token = TokenGeneration(claims)
+                token = AuthExtensions.TokenGeneration(claims, _config)
             });
-        }
-    
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var newPasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                return new ReadOnlySpan<byte>(passwordHash).SequenceEqual(new ReadOnlySpan<byte>(newPasswordHash));
-            }
-        }
-
-        private string TokenGeneration(List<Claim> claims)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:ClaveSecreta"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-              _config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-              expires: DateTime.Now.AddMinutes(120),
-              signingCredentials: creds,
-              claims: claims
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

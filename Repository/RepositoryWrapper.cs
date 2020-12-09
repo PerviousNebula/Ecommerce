@@ -15,6 +15,7 @@ namespace Repository
         private ISizeRepository _size;
         private IUserRepository _user;
         private IRolRepository _rol;
+        private IOrderRepository _order;
 
         public ICustomerRepository Customer {
             get {
@@ -95,12 +96,23 @@ namespace Repository
 
         public IRolRepository Rol {
             get {
-                if(_rol == null)
+                if (_rol == null)
                 {
                     _rol = new RolRepository(_repoContext);
                 }
 
                 return _rol;
+            }
+        }
+
+        public IOrderRepository Order {
+            get {
+                if (_order == null)
+                {
+                    _order = new OrderRepository(_repoContext);
+                }
+
+                return _order;
             }
         }
 

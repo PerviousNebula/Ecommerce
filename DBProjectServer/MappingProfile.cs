@@ -44,5 +44,8 @@ public class MappingProfile : Profile
         CreateMap<Rol, RolDto>()
             .ForMember(dest => dest.rolId, opt => opt.MapFrom(src => src.id));
 
+        CreateMap<Order, OrderDto>()
+            .ForMember(dest => dest.orderId, opt => opt.MapFrom(src => src.id));
+
     }
 }
