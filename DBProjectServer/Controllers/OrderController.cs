@@ -58,42 +58,49 @@ namespace DBProject.Controllers
         }
 
         [HttpGet("{id}", Name = "OrderById")]
-        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Order>))]
-        public IActionResult GetOrderById(int id)
+        public async Task<IActionResult> GetOrderById(int id)
         {
-            var order = HttpContext.Items["entity"] as Order;
+            var order = await _repository.Order.GetOrderByIdAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
 
             var orderResult = _mapper.Map<OrderDto>(order);
 
             return Ok(orderResult);
         }
     
-        // [HttpPost]
-        // [ServiceFilter(typeof(ValidationFilterAttribute))]
-        // public async Task<IActionResult> CreateOrder([FromBody] List<SizeCreationDto> sizes)
-        // {
-        //     var sizesEntity = _mapper.Map<IEnumerable<Size>>(sizes);
+        [HttpPost]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderCreationDto order)
+        {
+            var orderEntity = _mapper.Map<Order>(order);
 
-        //     _repository.Size.CreateSizes(sizesEntity);
-        //     await _repository.SaveAsync();
+            _repository.Order.CreateOrder(orderEntity);
+            await _repository.SaveAsync();
+            _repository.Order.GenerateOrderNumber(orderEntity);
+            await _repository.SaveAsync();
+            
+            var createdOrder = _mapper.Map<OrderDto>(orderEntity);
 
-        //     return NoContent();
-        // }
+            return CreatedAtRoute("OrderById", new { id = createdOrder.orderId }, createdOrder);
+        }
     
-        // [HttpPut("{id}")]
-        // [ServiceFilter(typeof(ValidationFilterAttribute))]
-        // [ServiceFilter(typeof(ValidateEntityExistsAttribute<Size>))]
-        // public async Task<IActionResult> UpdateSize(int id, [FromBody] SizeForUpdateDto size)
-        // {
-        //     var sizeEntity = HttpContext.Items["entity"] as Size;
+        [HttpPut("{id}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidateEntityExistsAttribute<Order>))]
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderForUpdateDto order)
+        {
+            var orderEntity = HttpContext.Items["entity"] as Order;
 
-        //     _mapper.Map(size, sizeEntity);
+            _mapper.Map(order, orderEntity);
 
-        //     _repository.Size.UpdateSize(sizeEntity);
-        //     await _repository.SaveAsync();
+            _repository.Order.UpdateOrder(orderEntity);
+            await _repository.SaveAsync();
 
-        //     return NoContent();
-        // }
+            return NoContent();
+        }
 
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Order>))]

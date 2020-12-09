@@ -46,6 +46,8 @@ public class MappingProfile : Profile
 
         CreateMap<Order, OrderDto>()
             .ForMember(dest => dest.orderId, opt => opt.MapFrom(src => src.id));
+        CreateMap<OrderCreationDto, Order>();
+        CreateMap<OrderForUpdateDto, Order>();
 
     }
 }

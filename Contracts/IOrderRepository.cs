@@ -8,6 +8,7 @@ namespace Contracts
         Task<PagedList<Order>> GetAllOrdersAsync(OrderParameters orderParameters);
         Task<Order> GetOrderByIdAsync(int orderId);
         void CreateOrder(Order order);
+        void GenerateOrderNumber(Order order);
         void UpdateOrder(Order order);
         void DeleteOrder(Order order);
     }

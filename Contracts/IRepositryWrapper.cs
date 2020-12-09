@@ -13,6 +13,8 @@ namespace Contracts
         IUserRepository User { get; }
         IRolRepository Rol { get; }
         IOrderRepository Order { get; }
+        IOrderDetailRepository OrderDetail { get; }
+        IProductDesignRepository ProductDesign { get; }
         Task SaveAsync();
     }
 }

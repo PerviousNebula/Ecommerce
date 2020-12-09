@@ -16,6 +16,8 @@ namespace Repository
         private IUserRepository _user;
         private IRolRepository _rol;
         private IOrderRepository _order;
+        private IOrderDetailRepository _orderDetail;
+        private IProductDesignRepository _productDesign;
 
         public ICustomerRepository Customer {
             get {
@@ -113,6 +115,28 @@ namespace Repository
                 }
 
                 return _order;
+            }
+        }
+
+        public IOrderDetailRepository OrderDetail {
+            get {
+                if (_orderDetail == null)
+                {
+                    _orderDetail = new OrderDetailRepository(_repoContext);
+                }
+
+                return _orderDetail;
+            }
+        }
+
+        public IProductDesignRepository ProductDesign {
+            get {
+                if (_productDesign == null)
+                {
+                    _productDesign = new ProductDesignRepository(_repoContext);
+                }
+
+                return _productDesign;
             }
         }
 
