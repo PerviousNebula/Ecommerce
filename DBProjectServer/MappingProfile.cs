@@ -35,7 +35,6 @@ public class MappingProfile : Profile
         CreateMap<ColorCreationDto, Color>();
         CreateMap<ColorForUpdateDto, Color>();
 
-
         CreateMap<User, UserDto>()
             .ForMember(dest => dest.userId, opt => opt.MapFrom(src => src.id));
         CreateMap<UserCreationDto, User>();
@@ -48,6 +47,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.orderId, opt => opt.MapFrom(src => src.id));
         CreateMap<OrderCreationDto, Order>();
         CreateMap<OrderForUpdateDto, Order>();
+
+        CreateMap<OrderDetailCreationDto, OrderDetail>();
+        CreateMap<OrderDetailForUpdateDto, OrderDetail>();
+
+        CreateMap<ProductDesignCreationDto, ProductDesign>();
+        CreateMap<ProductDesignForUpdateDto, ProductDesign>();
 
     }
 }
