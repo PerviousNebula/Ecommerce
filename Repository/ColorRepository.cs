@@ -27,6 +27,12 @@ namespace Repository
             Delete(color);
         }
 
+        public async Task<Color> GetColorByIdAsync(int colorId)
+        {
+            return await FindByCondition(c => c.id == colorId)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Color>> GetColorsByProductId(int productId)
         {
             return await FindByCondition(c => c.productId == productId)

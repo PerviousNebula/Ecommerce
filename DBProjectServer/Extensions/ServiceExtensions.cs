@@ -1,5 +1,7 @@
 using Contracts;
+using DBProject.ActionFilters;
 using Entities;
+using Entities.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +40,20 @@ namespace DBProject.Extensions
         public static void ConfigureRepositoryWrapper(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+        }
+
+        public static void ConfigureEntityExistsAttribute(this IServiceCollection services)
+        {
+            services.AddScoped<ValidateEntityExistsAttribute<Customer>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Address>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Category>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Product>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Size>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Color>>();
+            services.AddScoped<ValidateEntityExistsAttribute<User>>();
+            services.AddScoped<ValidateEntityExistsAttribute<Order>>();
+            services.AddScoped<ValidateEntityExistsAttribute<OrderDetail>>();
+            services.AddScoped<ValidateEntityExistsAttribute<ProductDesign>>();
         }
     }
 }

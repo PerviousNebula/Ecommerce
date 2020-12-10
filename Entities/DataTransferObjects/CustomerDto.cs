@@ -10,4 +10,5 @@ public class CustomerDto
     public DateTime signupDate { get; set; }
 
     public IEnumerable<AddressDto> Addresses { get; set; }
+    public IEnumerable<OrderDto> Orders { get; set; }
 }

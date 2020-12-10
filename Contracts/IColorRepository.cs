@@ -7,6 +7,7 @@ namespace Contracts
     public interface IColorRepository : IRepositoryBase<Color>
     {
         Task<IEnumerable<Color>> GetColorsByProductId(int productId);
+        Task<Color> GetColorByIdAsync(int colorId);
         void CreateColors(IEnumerable<Color> colors);
         void UpdateColor(Color color);
         void DeleteColor(Color color);

@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -23,6 +24,7 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAllAddresses([FromQuery] AddressParameters addressParameters)
         {
             var addresses = await _repository.Address.GetAllAddressesAsync(addressParameters);
@@ -44,6 +46,7 @@ namespace DBProject.Controllers
             return Ok(addressessResult);
         }
 
+        [Authorize]
         [HttpGet("{id}", Name = "AddressById")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Address>))]
         public IActionResult GetAddressById(int id)
@@ -56,6 +59,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPost]
+        [Authorize]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateAddress([FromBody] AddressCreationDto address)
         {
@@ -69,6 +73,7 @@ namespace DBProject.Controllers
             return CreatedAtRoute("AddressById", new { id = createdAddress.addressId }, createdAddress);
         }
     
+        [Authorize]
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Address>))]
@@ -84,6 +89,7 @@ namespace DBProject.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Address>))]
         public async Task<IActionResult> DeleteAddress(int id)

@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBProject.Controllers
@@ -21,6 +22,22 @@ namespace DBProject.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
+        [HttpGet("detail/{id}")]
+        public async Task<IActionResult> GetOrderDetailById(int id)
+        {
+            var orderDetail = await _repository.OrderDetail.GetOrderDetailByIdAsync(id);
+            if (orderDetail == null)
+            {
+                return NotFound();
+            }
+
+            var orderDetailResult = _mapper.Map<OrderDetailDto>(orderDetail);
+
+            return Ok(orderDetailResult);
+        }
+
+        [AllowAnonymous]
         [HttpPost("{orderId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateOrderDetail(int orderId, [FromBody] List<OrderDetailCreationDto> orderDetails)
@@ -51,6 +68,7 @@ namespace DBProject.Controllers
             return NoContent();
         }
     
+        [Authorize]
         [HttpPut("{orderId}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateOrderDetail(int orderId, [FromBody] List<OrderDetailForUpdateDto> orderDetails)
@@ -79,6 +97,7 @@ namespace DBProject.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("order/{orderId}/productDesign/{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<ProductDesign>))]

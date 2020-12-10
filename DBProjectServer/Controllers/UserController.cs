@@ -6,6 +6,7 @@ using Contracts;
 using DBProject.ActionFilters;
 using DBProject.Extensions;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -27,6 +28,7 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _repository.User.GetUsers();
@@ -36,6 +38,7 @@ namespace DBProject.Controllers
             return Ok(usersResult);
         }
 
+        [Authorize]
         [HttpGet("{id}", Name = "UserById")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<User>))]
         public IActionResult GetUserById(int id)
@@ -48,6 +51,7 @@ namespace DBProject.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto user)
         {
@@ -65,6 +69,7 @@ namespace DBProject.Controllers
             return CreatedAtRoute("UserById", new { id = createdUser.userId }, createdUser);
         }
     
+        [Authorize]
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<User>))]
@@ -93,6 +98,7 @@ namespace DBProject.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<User>))]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -104,6 +110,7 @@ namespace DBProject.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Login([FromBody] LoginDto user)

@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBProject.Controllers
@@ -21,6 +22,7 @@ namespace DBProject.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Product>))]
         public async Task<IActionResult> GetSizesByProductId(int id)
@@ -33,6 +35,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPost]
+        [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateSizes([FromBody] List<SizeCreationDto> sizes)
         {
@@ -45,6 +48,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Size>))]
         public async Task<IActionResult> UpdateSize(int id, [FromBody] SizeForUpdateDto size)
@@ -60,6 +64,7 @@ namespace DBProject.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Size>))]
         public async Task<IActionResult> DeleteSize(int id)
         {

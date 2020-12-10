@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -54,5 +55,7 @@ namespace Entities.Models
         [ForeignKey(nameof(Address))]
         public int? addressId { get; set; }
         public Address Address { get; set; }
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

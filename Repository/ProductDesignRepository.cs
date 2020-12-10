@@ -1,6 +1,8 @@
+using System.Threading.Tasks;
 using Contracts;
 using Entities;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -19,6 +21,12 @@ namespace Repository
         public void DeleteProductDesign(ProductDesign productDesign)
         {
             Delete(productDesign);
+        }
+
+        public async Task<ProductDesign> GetProductDesignByIdAsync(int productDesignId)
+        {
+            return await FindByCondition(pd => pd.id == productDesignId)
+                .FirstOrDefaultAsync();
         }
 
         public void UpdateProductDesign(ProductDesign productDesign)

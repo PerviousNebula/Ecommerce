@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class OrderDto
 {
@@ -18,4 +19,5 @@ public class OrderDto
     public int customerId { get; set; }
     public int addressId { get; set; }
     public AddressDto Address { get; set; }
+    public IEnumerable<OrderDetailDto> OrderDetails { get; set; }
 }

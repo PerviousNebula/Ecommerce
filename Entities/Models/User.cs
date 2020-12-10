@@ -25,7 +25,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "PasswordSalt is required")]
         public byte[] passwordSalt { get; set; }
 
-        public byte[] imgSrc { get; set; }
+        public string imgSrc { get; set; }
 
         public DateTime createdAt { get; set; }
 

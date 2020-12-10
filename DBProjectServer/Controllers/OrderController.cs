@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -23,6 +24,7 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAllOrders([FromQuery] OrderParameters orderParameters)
         {
             if (!orderParameters.ValidDateRange)
@@ -57,6 +59,7 @@ namespace DBProject.Controllers
             return Ok(ordersResult);
         }
 
+        [Authorize]
         [HttpGet("{id}", Name = "OrderById")]
         public async Task<IActionResult> GetOrderById(int id)
         {
@@ -70,8 +73,9 @@ namespace DBProject.Controllers
 
             return Ok(orderResult);
         }
-    
+
         [HttpPost]
+        [AllowAnonymous]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateOrder([FromBody] OrderCreationDto order)
         {
@@ -86,7 +90,8 @@ namespace DBProject.Controllers
 
             return CreatedAtRoute("OrderById", new { id = createdOrder.orderId }, createdOrder);
         }
-    
+
+        [Authorize]
         [HttpPut("{id}")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Order>))]
@@ -102,6 +107,7 @@ namespace DBProject.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Order>))]
         public async Task<IActionResult> DeleteOrder(int id)

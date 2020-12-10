@@ -16,7 +16,7 @@ public class ProductCreationDto
     [StringLength(100, ErrorMessage = "LongDescription can't be longer than 100 characters")]
     public string longDescription { get; set; }
 
-    public byte[] frontCover { get; set; }
+    public string frontCover { get; set; }
 
     [Required(ErrorMessage = "Price is required")]
     public double price { get; set; }

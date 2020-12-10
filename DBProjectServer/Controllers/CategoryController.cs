@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -23,6 +24,7 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllCategories([FromQuery] CategoryParameters categoryParameters)
         {
             var categories = await _repository.Category.GetAllCategoriesAsync(categoryParameters);
@@ -44,6 +46,7 @@ namespace DBProject.Controllers
             return Ok(categoriesResult);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}", Name = "CategoryById")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Category>))]
         public IActionResult GetCategoryById(int id)
@@ -55,6 +58,7 @@ namespace DBProject.Controllers
             return Ok(categoryResult);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}/products")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Category>))]
         public async Task<IActionResult> GetCategoryWithProducts(int id)
@@ -67,6 +71,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryCreationDto category)
         {
@@ -81,6 +86,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Category>))]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryForUpdateDto category)
@@ -96,6 +102,7 @@ namespace DBProject.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Category>))]
         public async Task<IActionResult> DeleteCategory(int id)
         {

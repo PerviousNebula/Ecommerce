@@ -14,7 +14,7 @@ namespace Entities.Models
         public int quantity { get; set; }
 
         [Required(ErrorMessage = "Weight is required")]
-        public double weight { get; set; }
+        public int weight { get; set; }
 
         [Required(ErrorMessage = "Total is required")]
         public double total { get; set; }

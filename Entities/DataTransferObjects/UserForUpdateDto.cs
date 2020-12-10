@@ -20,7 +20,7 @@ public class UserForUpdateDto
 
     public byte[] passwordSalt { get; set; }
 
-    public byte[] imgSrc { get; set; }
+    public string imgSrc { get; set; }
 
 
     [Required(ErrorMessage = "Archive is required")]

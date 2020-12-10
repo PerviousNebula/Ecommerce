@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
@@ -180,6 +179,7 @@ namespace Repository
         {
             return await FindByCondition(o => o.id == orderId)
                 .Include(o => o.Address)
+                .Include(o => o.OrderDetails)
                 .FirstOrDefaultAsync();
         }
 

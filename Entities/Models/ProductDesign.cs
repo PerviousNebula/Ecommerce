@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,10 +12,10 @@ namespace Entities.Models
         public int id { get; set; }
 
         [Required(ErrorMessage = "DesignConfig is required")]
-        public byte[] designConfig { get; set; }
+        public string designConfig { get; set; }
 
         [Required(ErrorMessage = "DesignAsset is required")]
-        public byte[] designAsset { get; set; }
+        public string designAsset { get; set; }
 
         [ForeignKey(nameof(Product))]
         [Required(ErrorMessage = "ProductId is required")]
@@ -30,5 +31,7 @@ namespace Entities.Models
         [Required(ErrorMessage = "SizeId is required")]
         public int sizeId { get; set; }
         public Size Size { get; set; }
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

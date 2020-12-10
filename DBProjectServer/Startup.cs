@@ -39,16 +39,7 @@ namespace DBProject
             services.ConfigureRepositoryWrapper();
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<ValidationFilterAttribute>();
-            services.AddScoped<ValidateEntityExistsAttribute<Customer>>();
-            services.AddScoped<ValidateEntityExistsAttribute<Address>>();
-            services.AddScoped<ValidateEntityExistsAttribute<Category>>();
-            services.AddScoped<ValidateEntityExistsAttribute<Product>>();
-            services.AddScoped<ValidateEntityExistsAttribute<Size>>();
-            services.AddScoped<ValidateEntityExistsAttribute<Color>>();
-            services.AddScoped<ValidateEntityExistsAttribute<User>>();
-            services.AddScoped<ValidateEntityExistsAttribute<Order>>();
-            services.AddScoped<ValidateEntityExistsAttribute<OrderDetail>>();
-            services.AddScoped<ValidateEntityExistsAttribute<ProductDesign>>();
+            services.ConfigureEntityExistsAttribute();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 

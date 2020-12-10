@@ -6,6 +6,7 @@ using Contracts;
 using DBProject.ActionFilters;
 using DBProject.Extensions;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -28,6 +29,7 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> GetAllCustomers([FromQuery] CustomerParameters customerParameters)
         {
             if (!customerParameters.ValidYearRange)
@@ -54,6 +56,7 @@ namespace DBProject.Controllers
             return Ok(customersResult);
         }
 
+        [Authorize]
         [HttpGet("{id}", Name = "CustomerById")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Customer>))]
         public IActionResult GetCustomerById(int id)
@@ -65,11 +68,12 @@ namespace DBProject.Controllers
             return Ok(customerResult);
         }
 
-        [HttpGet("{id}/address")]
+        [Authorize]
+        [HttpGet("{id}/details")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Customer>))]
         public async Task<IActionResult> GetCustomerWithDetails(int id)
         {
-            var customer = await _repository.Customer.GetCustomerWithAddressesAsync(id);
+            var customer = await _repository.Customer.GetCustomerWithDetailsAsync(id);
 
             var customerResult = _mapper.Map<CustomerDto>(customer);
 
@@ -77,6 +81,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateCustomer([FromBody] CustomerCreationDto customer)
         {
@@ -95,6 +100,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Customer>))]
         public async Task<IActionResult> UpdateCustomer(int id, [FromBody] CustomerForUpdateDto customer)
@@ -122,6 +128,7 @@ namespace DBProject.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Customer>))]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
@@ -133,6 +140,7 @@ namespace DBProject.Controllers
             return NoContent();
         }
     
+        [AllowAnonymous]
         [HttpPost("login")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> Login([FromBody] LoginDto customer)

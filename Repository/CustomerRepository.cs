@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
@@ -91,10 +90,11 @@ namespace Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Customer> GetCustomerWithAddressesAsync(int customerId)
+        public async Task<Customer> GetCustomerWithDetailsAsync(int customerId)
         {
             return await FindByCondition(cu => cu.id == customerId)
-                .Include(ad => ad.Addresses)
+                .Include(c => c.Addresses)
+                .Include(c => c.Orders)
                 .FirstOrDefaultAsync();
         }
 

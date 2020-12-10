@@ -4,6 +4,7 @@ using AutoMapper;
 using Contracts;
 using DBProject.ActionFilters;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -23,6 +24,7 @@ namespace DBProject.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllProducts([FromQuery] ProductParameters productParameters)
         {
             if (!productParameters.ValidaPriceRange)
@@ -49,6 +51,7 @@ namespace DBProject.Controllers
             return Ok(productsResult);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}", Name = "ProductById")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Product>))]
         public async Task<IActionResult> GetProductById(int id)
@@ -61,6 +64,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPost]
+        [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreationDto product)
         {
@@ -75,6 +79,7 @@ namespace DBProject.Controllers
         }
     
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Product>))]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductForUpdateDto product)
@@ -90,6 +95,7 @@ namespace DBProject.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Product>))]
         public async Task<IActionResult> DeleteProduct(int id)
         {
