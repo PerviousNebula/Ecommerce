@@ -28,12 +28,14 @@ public class MappingProfile : Profile
         CreateMap<Size, SizeDto>()
             .ForMember(dest => dest.sizeId, opt => opt.MapFrom(src => src.id));
         CreateMap<SizeCreationDto, Size>();
-        CreateMap<SizeForUpdateDto, Size>();
+        CreateMap<SizeForUpdateDto, Size>()
+            .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.sizeId));
 
         CreateMap<Color, ColorDto>()
             .ForMember(dest => dest.colorId, opt => opt.MapFrom(src => src.id));
         CreateMap<ColorCreationDto, Color>();
-        CreateMap<ColorForUpdateDto, Color>();
+        CreateMap<ColorForUpdateDto, Color>()
+            .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.colorId));
 
         CreateMap<User, UserDto>()
             .ForMember(dest => dest.userId, opt => opt.MapFrom(src => src.id));

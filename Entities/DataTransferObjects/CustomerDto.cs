@@ -8,6 +8,7 @@ public class CustomerDto
     public string lastName { get; set; }
     public string email { get; set; }
     public DateTime signupDate { get; set; }
+    public bool archive { get; set; }
 
     public IEnumerable<AddressDto> Addresses { get; set; }
     public IEnumerable<OrderDto> Orders { get; set; }

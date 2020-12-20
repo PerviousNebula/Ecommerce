@@ -43,5 +43,13 @@ namespace Repository
         {
             Update(size);
         }
+
+        public void UpdateSizes(IEnumerable<Size> sizes)
+        {
+            foreach (var size in sizes)
+            {
+                Update(size);
+            }
+        }
     }
 }

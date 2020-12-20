@@ -5,4 +5,5 @@ public class ColorDto
     public string hexColor { get; set; }
     public double priceIncrement { get; set; }
     public bool archive { get; set; }
+    public int productId { get; set; }
 }

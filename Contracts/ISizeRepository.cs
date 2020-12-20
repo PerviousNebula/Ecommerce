@@ -10,6 +10,7 @@ namespace Contracts
         Task<Size> GetSizeById(int sizeId);
         void CreateSizes(IEnumerable<Size> sizes);
         void UpdateSize(Size size);
+        void UpdateSizes(IEnumerable<Size> sizes);
         void DeleteSize(Size size);
     }
 }

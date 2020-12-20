@@ -43,5 +43,33 @@ namespace DBProject.Extensions
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public static IEnumerable<Claim> VerifyToken(string token, IConfiguration _config)
+        {
+            var validationParameters = new TokenValidationParameters()
+            {
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Issuer"],
+                ValidateLifetime = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(_config["JWT:ClaveSecreta"])
+                )
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken validatedToken = null;
+            try
+            {
+                tokenHandler.ValidateToken(token, validationParameters, out validatedToken);
+            }
+            catch (SecurityTokenException)
+            {
+                return null;
+            }
+            return ((JwtSecurityToken)validatedToken).Claims;
+        }
     }
 }

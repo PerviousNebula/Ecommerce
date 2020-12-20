@@ -63,6 +63,19 @@ namespace DBProject.Controllers
             return NoContent();
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Administrador, Capturista")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> UpdateColors([FromBody] List<ColorForUpdateDto> colors)
+        {
+            var colorsEntity = _mapper.Map<IEnumerable<Color>>(colors);
+
+            _repository.Color.UpdateColors(colorsEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+        
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Color>))]

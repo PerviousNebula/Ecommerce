@@ -10,6 +10,7 @@ namespace Contracts
         Task<Color> GetColorByIdAsync(int colorId);
         void CreateColors(IEnumerable<Color> colors);
         void UpdateColor(Color color);
+        void UpdateColors(IEnumerable<Color> colors);
         void DeleteColor(Color color);
     }
 }

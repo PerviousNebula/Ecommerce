@@ -13,4 +13,7 @@ public class SizeForUpdateDto
 
     [Required(ErrorMessage = "Archive is required")]
     public bool archive { get; set; }
+
+    [Required(ErrorMessage = "ProductId is required")]
+    public int productId { get; set; }
 }

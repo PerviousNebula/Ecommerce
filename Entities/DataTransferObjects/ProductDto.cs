@@ -7,7 +7,7 @@ public class ProductDto
     public string sku { get; set; }
     public string shortDescription { get; set; }
     public string longDescription { get; set; }
-    public byte[] frontCover { get; set; }
+    public string frontCover { get; set; }
     public double price { get; set; }
     public int stock { get; set; }
     public double weight { get; set; }

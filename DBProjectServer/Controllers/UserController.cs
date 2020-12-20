@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -139,6 +140,30 @@ namespace DBProject.Controllers
             return Ok(new {
                 user = userResult,
                 token = AuthExtensions.TokenGeneration(claims, _config)
+            });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("refresh-token")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public IActionResult RefreshToken([FromBody] TokenDto model)
+        {
+            var validatedClaims = (AuthExtensions.VerifyToken(model.token, _config));
+            if (validatedClaims == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = new UserDto
+            {
+                userId = int.Parse(validatedClaims.First(c => c.Type == ClaimTypes.NameIdentifier).Value),
+                email = validatedClaims.First(c => c.Type == ClaimTypes.Email).Value,
+                name = validatedClaims.First(c => c.Type == ClaimTypes.Name).Value
+            };
+
+            return Ok(new {
+                user,
+                token = AuthExtensions.TokenGeneration(validatedClaims.ToList(), _config)
             });
         }
     }

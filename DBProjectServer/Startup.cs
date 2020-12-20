@@ -71,7 +71,7 @@ namespace DBProject
 
             app.ConfigureExceptionHandler();
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("CorsPolicy");
             app.UseForwardedHeaders(new ForwardedHeadersOptions

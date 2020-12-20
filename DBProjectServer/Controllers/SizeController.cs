@@ -63,6 +63,19 @@ namespace DBProject.Controllers
             return NoContent();
         }
 
+        [HttpPut]
+        [Authorize(Roles = "Administrador, Capturista")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> UpdateSizes([FromBody] List<SizeForUpdateDto> sizes)
+        {
+            var sizesEntity = _mapper.Map<IEnumerable<Size>>(sizes);
+
+            _repository.Size.UpdateSizes(sizesEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Administrador, Capturista")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Size>))]

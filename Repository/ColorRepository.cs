@@ -43,5 +43,13 @@ namespace Repository
         {
             Update(color);
         }
+
+        public void UpdateColors(IEnumerable<Color> colors)
+        {
+            foreach (var color in colors)
+            {
+                Update(color);
+            }
+        }
     }
 }
