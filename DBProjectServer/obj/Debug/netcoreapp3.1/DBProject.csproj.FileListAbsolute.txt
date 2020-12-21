@@ -70,3 +70,4 @@
 /home/arturo/DBProject/DBProjectServer/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/arturo/DBProject/DBProjectServer/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Tokens.dll
 /home/arturo/DBProject/DBProjectServer/bin/Debug/netcoreapp3.1/System.IdentityModel.Tokens.Jwt.dll
+/home/arturo/DBProject/DBProjectServer/bin/Debug/netcoreapp3.1/RestSharp.dll

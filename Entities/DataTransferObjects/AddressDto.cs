@@ -8,4 +8,5 @@ public class AddressDto
     public string country { get; set; }
     public string zip { get; set; }
     public bool archive { get; set; }
+    public int customerId { get; set; }
 }

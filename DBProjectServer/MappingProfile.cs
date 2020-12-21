@@ -13,7 +13,8 @@ public class MappingProfile : Profile
         CreateMap<Address, AddressDto>()
             .ForMember(dest => dest.addressId, opt => opt.MapFrom(src => src.id));
         CreateMap<AddressCreationDto, Address>();
-        CreateMap<AddressForUpdateDto, Address>();
+        CreateMap<AddressForUpdateDto, Address>()
+            .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.addressId));
 
         CreateMap<Category, CategoryDto>()
             .ForMember(dest => dest.categoryId, opt => opt.MapFrom(src => src.id));

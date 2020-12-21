@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Contracts;
@@ -106,6 +107,22 @@ namespace Repository
         public void DeleteAddress(Address address)
         {
             Delete(address);
+        }
+
+        public void CreateAddresses(IEnumerable<Address> addresses)
+        {
+            foreach (var address in addresses)
+            {
+                Create(address);
+            }
+        }
+
+        public void UpdateAddresses(IEnumerable<Address> addresses)
+        {
+            foreach (var address in addresses)
+            {
+                Update(address);
+            }
         }
     }
 }

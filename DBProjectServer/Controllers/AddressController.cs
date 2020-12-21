@@ -7,6 +7,7 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using RestSharp;
 
 namespace DBProject.Controllers
 {
@@ -72,6 +73,19 @@ namespace DBProject.Controllers
 
             return CreatedAtRoute("AddressById", new { id = createdAddress.addressId }, createdAddress);
         }
+
+        [Authorize]
+        [HttpPost("list")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> CreateAddresses([FromBody] List<AddressCreationDto> addresses)
+        {
+            var addressesEntity = _mapper.Map<IEnumerable<Address>>(addresses);
+
+            _repository.Address.CreateAddresses(addressesEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
     
         [Authorize]
         [HttpPut("{id}")]
@@ -90,6 +104,19 @@ namespace DBProject.Controllers
         }
 
         [Authorize]
+        [HttpPut("list")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> UpdateAddresses([FromBody] List<AddressForUpdateDto> addresses)
+        {
+            var addressesEntity = _mapper.Map<IEnumerable<Address>>(addresses);
+
+            _repository.Address.UpdateAddresses(addressesEntity);
+            await _repository.SaveAsync();
+
+            return NoContent();
+        }
+
+        [Authorize]
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(ValidateEntityExistsAttribute<Address>))]
         public async Task<IActionResult> DeleteAddress(int id)
@@ -100,6 +127,16 @@ namespace DBProject.Controllers
             await _repository.SaveAsync();
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("countries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            var client = new RestClient("https://restcountries.eu");
+            var request = new RestRequest("/rest/v2/all", Method.GET, DataFormat.Json);
+            var countries = await client.GetAsync<IEnumerable<CountryDto>>(request);
+            return Ok(countries);
         }
     }
 }
