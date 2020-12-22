@@ -78,7 +78,7 @@ namespace DBProject.Controllers
         {
             var userEntity = HttpContext.Items["entity"] as User;
 
-            if (!string.IsNullOrEmpty(user.password) || user.password != null)
+            if (!string.IsNullOrEmpty(user.password) && user.password != null)
             {
                 AuthExtensions.CreatePasswordHash(user.password, out byte[] passwordHash, out byte[] passwordSalt);
                 user.passwordHash = passwordHash;
@@ -95,7 +95,15 @@ namespace DBProject.Controllers
             _repository.User.UpdateUser(userEntity);
             await _repository.SaveAsync();
 
-            return NoContent();
+            var userResult = new UserDto();
+            var token = string.Empty;
+
+            this.CreateUserResponse(userEntity, out userResult, out token);
+
+            return Ok(new {
+                user = userResult,
+                token
+            });
         }
 
         [HttpDelete("{id}")]
@@ -127,19 +135,14 @@ namespace DBProject.Controllers
                 return NotFound("Invalid email or password");
             }
 
-            var claims  = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, userEntity.id.ToString()),
-                new Claim(ClaimTypes.Email, userEntity.email),
-                new Claim(ClaimTypes.Name, userEntity.name),
-                new Claim(ClaimTypes.Role, userEntity.rolId == 1 ? "Administrador" : "Capturista")
-            };
+            var userResult = new UserDto();
+            var token = string.Empty;
 
-            var userResult = _mapper.Map<UserDto>(userEntity);
+            this.CreateUserResponse(userEntity, out userResult, out token);
 
             return Ok(new {
                 user = userResult,
-                token = AuthExtensions.TokenGeneration(claims, _config)
+                token
             });
         }
 
@@ -165,6 +168,20 @@ namespace DBProject.Controllers
                 user,
                 token = AuthExtensions.TokenGeneration(validatedClaims.ToList(), _config)
             });
+        }
+    
+        private void CreateUserResponse(User userEntity, out UserDto userResult, out string token)
+        {
+            var claims  = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userEntity.id.ToString()),
+                new Claim(ClaimTypes.Email, userEntity.email),
+                new Claim(ClaimTypes.Name, userEntity.name),
+                new Claim(ClaimTypes.Role, userEntity.rolId == 1 ? "Administrador" : "Capturista")
+            };
+
+            userResult = _mapper.Map<UserDto>(userEntity);
+            token = AuthExtensions.TokenGeneration(claims, _config);
         }
     }
 }
