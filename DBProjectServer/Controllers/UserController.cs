@@ -140,9 +140,14 @@ namespace DBProject.Controllers
 
             this.CreateUserResponse(userEntity, out userResult, out token);
 
+            var menus = await _repository.RolMenu.GetRolMenusByRolId(userEntity.rolId);
+            var menusResult = _mapper.Map<IEnumerable<RolMenuDto>>(menus)
+                                .Select(m => m.Menu);
+
             return Ok(new {
                 user = userResult,
-                token
+                menu = menusResult,
+                token,
             });
         }
 

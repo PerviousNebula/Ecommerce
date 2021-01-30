@@ -15,6 +15,9 @@ namespace Contracts
         IOrderRepository Order { get; }
         IOrderDetailRepository OrderDetail { get; }
         IProductDesignRepository ProductDesign { get; }
+        IMenuRepository Menu { get; }
+        IMenuItemRepository MenuItem { get; }
+        IRolMenuRepository RolMenu { get; }
         Task SaveAsync();
     }
 }

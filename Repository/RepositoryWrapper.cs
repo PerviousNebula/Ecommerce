@@ -18,6 +18,9 @@ namespace Repository
         private IOrderRepository _order;
         private IOrderDetailRepository _orderDetail;
         private IProductDesignRepository _productDesign;
+        private IMenuRepository _menu;
+        private IMenuItemRepository _menuItem;
+        private IRolMenuRepository _rolMenu;
 
         public ICustomerRepository Customer {
             get {
@@ -137,6 +140,39 @@ namespace Repository
                 }
 
                 return _productDesign;
+            }
+        }
+
+        public IMenuRepository Menu {
+            get {
+                if (_menu == null)
+                {
+                    _menu = new MenuRepository(_repoContext);
+                }
+
+                return _menu;
+            }
+        }
+
+        public IMenuItemRepository MenuItem {
+            get {
+                if (_menuItem == null)
+                {
+                    _menuItem = new MenuItemRepository(_repoContext);
+                }
+
+                return _menuItem;
+            }
+        }
+
+        public IRolMenuRepository RolMenu {
+            get {
+                if (_rolMenu == null)
+                {
+                    _rolMenu = new RolMenuRepository(_repoContext);
+                }
+
+                return _rolMenu;
             }
         }
 

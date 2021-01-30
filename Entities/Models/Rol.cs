@@ -16,5 +16,7 @@ namespace Entities.Models
         public string name { get; set; }
 
         public ICollection<User> Users { get; set; }
+
+        public ICollection<RolMenu> RolMenus { get; set; }
     }
 }

@@ -61,5 +61,14 @@ public class MappingProfile : Profile
         CreateMap<ProductDesignCreationDto, ProductDesign>();
         CreateMap<ProductDesignForUpdateDto, ProductDesign>();
 
+        CreateMap<Menu, MenuDto>()
+            .ForMember(dest => dest.menuId, opt => opt.MapFrom(src => src.id));
+
+        CreateMap<MenuItem, MenuItemDto>()
+            .ForMember(dest => dest.menuItemId, opt => opt.MapFrom(src => src.id));
+
+        CreateMap<RolMenu, RolMenuDto>()
+            .ForMember(dest => dest.rolMenuId, opt => opt.MapFrom(src => src.id));
+
     }
 }

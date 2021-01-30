@@ -21,5 +21,8 @@ namespace Entities
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<ProductDesign> ProductDesigns { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<RolMenu> RolMenus { get; set; }
     }
 }
